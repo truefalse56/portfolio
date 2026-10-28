@@ -2,6 +2,40 @@
   const header = document.querySelector("[data-header]");
   const toggle = document.querySelector("[data-nav-toggle]");
   const nav = document.querySelector("[data-nav]");
+  const themeToggle = document.querySelector("[data-theme-toggle]");
+  const root = document.documentElement;
+
+  const getTheme = () =>
+    root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+
+  const setTheme = (theme) => {
+    if (theme === "dark") {
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.removeAttribute("data-theme");
+    }
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      /* ignore */
+    }
+    if (themeToggle) {
+      themeToggle.setAttribute(
+        "aria-label",
+        theme === "dark" ? "Включить светлую тему" : "Включить тёмную тему"
+      );
+      themeToggle.setAttribute(
+        "title",
+        theme === "dark" ? "Светлая тема" : "Тёмная тема"
+      );
+    }
+  };
+
+  setTheme(getTheme());
+
+  themeToggle?.addEventListener("click", () => {
+    setTheme(getTheme() === "dark" ? "light" : "dark");
+  });
 
   const onScroll = () => {
     if (!header) return;
