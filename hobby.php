@@ -7,7 +7,14 @@ require __DIR__ . '/includes/bootstrap.php';
 $slug = trim((string) ($_GET['slug'] ?? ''));
 if ($slug === '') {
     http_response_code(404);
-    exit('Запись не найдена');
+    $pageTitle = 'Не найдено';
+    $metaDescription = 'Запись не найдена.';
+    $robots = 'noindex, follow';
+    $canonicalPath = page_url('hobbies');
+    require __DIR__ . '/templates/header.php';
+    echo '<section class="section"><div class="container"><h1>Запись не найдена</h1><p><a href="' . e(page_url('hobbies')) . '">К разделу «Хобби»</a></p></div></section>';
+    require __DIR__ . '/templates/footer.php';
+    exit;
 }
 
 $stmt = db()->prepare(
@@ -19,13 +26,48 @@ $item = $stmt->fetch();
 if (!$item) {
     http_response_code(404);
     $pageTitle = 'Не найдено';
+    $metaDescription = 'Запись не найдена.';
+    $robots = 'noindex, follow';
+    $canonicalPath = page_url('hobbies');
     require __DIR__ . '/templates/header.php';
-    echo '<section class="section"><div class="container"><h1>Запись не найдена</h1><p><a href="' . e(base_url('hobbies.php')) . '">К разделу «Хобби»</a></p></div></section>';
+    echo '<section class="section"><div class="container"><h1>Запись не найдена</h1><p><a href="' . e(page_url('hobbies')) . '">К разделу «Хобби»</a></p></div></section>';
     require __DIR__ . '/templates/footer.php';
     exit;
 }
 
 $pageTitle = $item['title'];
+$metaDescription = $item['short_description']
+    ?: excerpt((string) $item['description'], 160);
+$canonicalPath = page_url('hobbies', $item['slug']);
+$ogType = 'article';
+$ogImage = $item['cover_image'] ? upload_url($item['cover_image']) : '';
+$breadcrumbs = [
+    ['name' => 'Главная', 'url' => page_url('home')],
+    ['name' => 'Хобби', 'url' => page_url('hobbies')],
+    ['name' => $item['title']],
+];
+
+$articleSchema = [
+    '@type' => 'Article',
+    '@id' => absolute_url($canonicalPath) . '#article',
+    'headline' => $item['title'],
+    'name' => $item['title'],
+    'description' => $metaDescription,
+    'url' => absolute_url($canonicalPath),
+    'inLanguage' => 'ru-RU',
+    'author' => ['@id' => absolute_url() . '#person'],
+    'isPartOf' => ['@id' => absolute_url() . '#website'],
+];
+if ($ogImage) {
+    $articleSchema['image'] = absolute_url($ogImage);
+}
+
+$schemaGraphs = [
+    schema_person(),
+    schema_website(),
+    schema_breadcrumbs($breadcrumbs),
+    $articleSchema,
+];
 
 $imagesStmt = db()->prepare(
     'SELECT * FROM hobby_images WHERE hobby_id = ? ORDER BY sort_order ASC, id ASC'
@@ -33,7 +75,6 @@ $imagesStmt = db()->prepare(
 $imagesStmt->execute([(int) $item['id']]);
 $images = $imagesStmt->fetchAll();
 
-// Обложка в слайдере, если отдельных фото ещё нет
 $slides = $images;
 if (!$slides && $item['cover_image']) {
     $slides = [[
@@ -48,7 +89,8 @@ require __DIR__ . '/templates/header.php';
 <article>
   <section class="page-hero">
     <div class="container narrow">
-      <a class="text-link reveal" href="<?= e(base_url('hobbies.php')) ?>">← Все хобби</a>
+      <?= render_breadcrumbs($breadcrumbs) ?>
+      <a class="text-link reveal" href="<?= e(page_url('hobbies')) ?>">← Все хобби</a>
       <h1 class="reveal" style="--delay:.05s"><?= e($item['title']) ?></h1>
       <?php if ($item['short_description']): ?>
         <p class="lead reveal" style="--delay:.1s"><?= e($item['short_description']) ?></p>
@@ -64,7 +106,7 @@ require __DIR__ . '/templates/header.php';
             <div class="slider-track" data-slider-track>
               <?php foreach ($slides as $i => $slide): ?>
                 <figure class="slider-slide" data-slider-slide <?= $i === 0 ? '' : 'aria-hidden="true"' ?>>
-                  <img src="<?= e(upload_url($slide['image_path'])) ?>" alt="<?= e($slide['caption'] ?: $item['title']) ?>" <?= $i === 0 ? '' : 'loading="lazy"' ?>>
+                  <img src="<?= e(upload_url($slide['image_path'])) ?>" alt="<?= e($slide['caption'] ?: $item['title']) ?>" width="1200" height="750" <?= $i === 0 ? '' : 'loading="lazy"' ?>>
                   <?php if (!empty($slide['caption'])): ?>
                     <figcaption><?= e($slide['caption']) ?></figcaption>
                   <?php endif; ?>

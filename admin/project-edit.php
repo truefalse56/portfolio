@@ -214,7 +214,7 @@ require __DIR__ . '/_layout_top.php';
     <button class="btn" type="submit" name="action" value="save">Сохранить</button>
     <a class="btn btn-ghost" href="<?= e(base_url('admin/projects.php')) ?>">Назад</a>
     <?php if ($item): ?>
-      <a class="btn btn-ghost" href="<?= e(base_url('project.php?slug=' . urlencode($item['slug']))) ?>" target="_blank">На сайте</a>
+      <a class="btn btn-ghost" href="<?= e(page_url('projects', $item['slug'])) ?>" target="_blank" rel="noopener">На сайте</a>
     <?php endif; ?>
   </div>
 </form>

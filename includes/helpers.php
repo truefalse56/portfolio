@@ -146,10 +146,27 @@ function is_active_nav(string $needle): bool
 {
     $uri = $_SERVER['REQUEST_URI'] ?? '/';
     $path = parse_url($uri, PHP_URL_PATH) ?: '/';
-    if ($needle === '/') {
+    $path = rtrim($path, '/') ?: '/';
+
+    if ($needle === '/' || $needle === 'home') {
         return $path === '/' || str_ends_with($path, '/index.php');
     }
-    return str_contains($path, $needle);
+
+    $aliases = [
+        'projects' => ['/projects', 'projects.php', 'project.php'],
+        'integrations' => ['/integrations', 'integrations.php', 'integration.php'],
+        'hobbies' => ['/hobbies', 'hobbies.php', 'hobby.php', 'hobb'],
+        'certificates' => ['/certificates', 'certificates.php'],
+    ];
+
+    $needles = $aliases[$needle] ?? [$needle];
+    foreach ($needles as $n) {
+        if (str_contains($path, $n)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function setting(string $key, ?string $default = null): ?string

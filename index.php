@@ -27,10 +27,31 @@ $title = setting('title', 'Fullstack Web Разработчик');
 $subtitle = setting('subtitle', 'PHP · Bitrix Framework · Битрикс24 CRM');
 $about = setting('about', '');
 $ctaText = setting('hero_cta_text', 'Смотреть проекты');
-$ctaLink = setting('hero_cta_link', 'projects.php');
+$ctaLink = setting('hero_cta_link', 'projects');
 if ($ctaLink && !str_starts_with($ctaLink, 'http') && !str_starts_with($ctaLink, '#')) {
-    $ctaLink = base_url(ltrim($ctaLink, '/'));
+    $ctaLink = public_path($ctaLink);
 }
+
+$metaDescription = setting('meta_description', '')
+    ?: ($fullName . ' — ' . $title . '. ' . $subtitle . '. Специализация: интеграции Битрикс24 CRM, кастомизация и PHP.');
+$canonicalPath = page_url('home');
+$ogType = 'website';
+if ($projects && !empty($projects[0]['cover_image'])) {
+    $ogImage = upload_url($projects[0]['cover_image']);
+}
+
+$schemaGraphs = [
+    schema_person(),
+    schema_website(),
+    [
+        '@type' => 'ProfilePage',
+        '@id' => absolute_url() . '#profile',
+        'url' => absolute_url(),
+        'name' => $fullName . ' — портфолио',
+        'mainEntity' => ['@id' => absolute_url() . '#person'],
+        'inLanguage' => 'ru-RU',
+    ],
+];
 
 require __DIR__ . '/templates/header.php';
 ?>
@@ -47,12 +68,12 @@ require __DIR__ . '/templates/header.php';
     <p class="hero-lead" data-animate="fade-up" data-delay="160"><?= e($subtitle) ?>. Специализация — интеграции Битрикс24 CRM, кастомизация и серверная логика на PHP.</p>
     <div class="hero-actions" data-animate="fade-up" data-delay="240">
       <a class="btn btn-primary" href="<?= e($ctaLink) ?>"><?= e($ctaText) ?></a>
-      <a class="btn btn-ghost" href="<?= e(base_url('integrations.php')) ?>">Интеграции CRM</a>
+      <a class="btn btn-ghost" href="<?= e(page_url('integrations')) ?>">Интеграции CRM</a>
     </div>
   </div>
 </section>
 
-<section class="section about-section">
+<section class="section about-section" id="about">
   <div class="container about-grid">
     <div class="reveal">
       <p class="eyebrow">О разработчике</p>
@@ -78,14 +99,14 @@ require __DIR__ . '/templates/header.php';
         <p class="eyebrow">Проекты</p>
         <h2>Реализованные решения</h2>
       </div>
-      <a class="text-link" href="<?= e(base_url('projects.php')) ?>">Все проекты</a>
+      <a class="text-link" href="<?= e(page_url('projects')) ?>">Все проекты</a>
     </div>
     <div class="work-list">
       <?php foreach ($projects as $i => $project): ?>
-        <a class="work-row reveal" style="--delay:<?= e((string) ($i * 0.08)) ?>s" href="<?= e(base_url('project.php?slug=' . urlencode($project['slug']))) ?>">
+        <a class="work-row reveal" style="--delay:<?= e((string) ($i * 0.08)) ?>s" href="<?= e(page_url('projects', $project['slug'])) ?>">
           <div class="work-media">
             <?php if ($project['cover_image']): ?>
-              <img src="<?= e(upload_url($project['cover_image'])) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
+              <img src="<?= e(upload_url($project['cover_image'])) ?>" alt="<?= e($project['title']) ?>" loading="lazy" width="360" height="270">
             <?php else: ?>
               <div class="media-placeholder" data-label="<?= e(mb_substr($project['title'], 0, 1)) ?>"></div>
             <?php endif; ?>
@@ -115,11 +136,11 @@ require __DIR__ . '/templates/header.php';
         <p class="eyebrow">Битрикс24 CRM</p>
         <h2>Интеграции и кастомизация</h2>
       </div>
-      <a class="text-link" href="<?= e(base_url('integrations.php')) ?>">Все интеграции</a>
+      <a class="text-link" href="<?= e(page_url('integrations')) ?>">Все интеграции</a>
     </div>
     <div class="integration-grid">
       <?php foreach ($integrations as $i => $item): ?>
-        <a class="integration-item reveal" style="--delay:<?= e((string) ($i * 0.07)) ?>s" href="<?= e(base_url('integration.php?slug=' . urlencode($item['slug']))) ?>">
+        <a class="integration-item reveal" style="--delay:<?= e((string) ($i * 0.07)) ?>s" href="<?= e(page_url('integrations', $item['slug'])) ?>">
           <span class="chip"><?= e($item['category']) ?></span>
           <h3><?= e($item['title']) ?></h3>
           <p><?= e($item['short_description']) ?></p>
@@ -138,14 +159,14 @@ require __DIR__ . '/templates/header.php';
         <p class="eyebrow">Вне кода</p>
         <h2>Хобби</h2>
       </div>
-      <a class="text-link" href="<?= e(base_url('hobbies.php')) ?>">Все хобби</a>
+      <a class="text-link" href="<?= e(page_url('hobbies')) ?>">Все хобби</a>
     </div>
     <div class="hobby-grid">
       <?php foreach ($hobbies as $i => $item): ?>
-        <a class="hobby-card reveal" style="--delay:<?= e((string) ($i * 0.07)) ?>s" href="<?= e(base_url('hobby.php?slug=' . urlencode($item['slug']))) ?>">
+        <a class="hobby-card reveal" style="--delay:<?= e((string) ($i * 0.07)) ?>s" href="<?= e(page_url('hobbies', $item['slug'])) ?>">
           <div class="hobby-card-media">
             <?php if ($item['cover_image']): ?>
-              <img src="<?= e(upload_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>" loading="lazy">
+              <img src="<?= e(upload_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>" loading="lazy" width="400" height="275">
             <?php else: ?>
               <div class="media-placeholder" data-label="<?= e(mb_substr($item['title'], 0, 1)) ?>"></div>
             <?php endif; ?>
@@ -169,7 +190,7 @@ require __DIR__ . '/templates/header.php';
       <h2>Сертификаты</h2>
       <p class="lead">Сертификаты о сдаче экзаменов и подтверждённые компетенции.</p>
     </div>
-    <a class="btn btn-primary" href="<?= e(base_url('certificates.php')) ?>">Открыть раздел</a>
+    <a class="btn btn-primary" href="<?= e(page_url('certificates')) ?>">Открыть раздел</a>
   </div>
 </section>
 

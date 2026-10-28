@@ -5,6 +5,12 @@ declare(strict_types=1);
 require __DIR__ . '/includes/bootstrap.php';
 
 $pageTitle = 'Хобби';
+$metaDescription = 'Хобби и интересы вне разработки — фото и описания занятий автора портфолио.';
+$canonicalPath = page_url('hobbies');
+$breadcrumbs = [
+    ['name' => 'Главная', 'url' => page_url('home')],
+    ['name' => 'Хобби'],
+];
 
 $hobbies = db()->query(
     'SELECT id, title, slug, short_description, cover_image,
@@ -13,11 +19,40 @@ $hobbies = db()->query(
      ORDER BY sort_order ASC, id DESC'
 )->fetchAll();
 
+$itemList = [];
+foreach ($hobbies as $i => $item) {
+    $itemList[] = [
+        '@type' => 'ListItem',
+        'position' => $i + 1,
+        'url' => absolute_url(page_url('hobbies', $item['slug'])),
+        'name' => $item['title'],
+    ];
+}
+
+$schemaGraphs = [
+    schema_person(),
+    schema_website(),
+    schema_breadcrumbs($breadcrumbs),
+    [
+        '@type' => 'CollectionPage',
+        '@id' => absolute_url($canonicalPath) . '#collection',
+        'url' => absolute_url($canonicalPath),
+        'name' => $pageTitle,
+        'description' => $metaDescription,
+        'isPartOf' => ['@id' => absolute_url() . '#website'],
+        'mainEntity' => [
+            '@type' => 'ItemList',
+            'itemListElement' => $itemList,
+        ],
+    ],
+];
+
 require __DIR__ . '/templates/header.php';
 ?>
 
 <section class="page-hero">
   <div class="container">
+    <?= render_breadcrumbs($breadcrumbs) ?>
     <p class="eyebrow reveal">Вне кода</p>
     <h1 class="reveal" style="--delay:.06s">Хобби</h1>
     <p class="lead reveal" style="--delay:.12s">Интересы и занятия вне разработки — с фото и описанием.</p>
@@ -28,10 +63,10 @@ require __DIR__ . '/templates/header.php';
   <div class="container">
     <div class="hobby-grid">
       <?php foreach ($hobbies as $i => $item): ?>
-        <a class="hobby-card reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s" href="<?= e(base_url('hobby.php?slug=' . urlencode($item['slug']))) ?>">
+        <a class="hobby-card reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s" href="<?= e(page_url('hobbies', $item['slug'])) ?>">
           <div class="hobby-card-media">
             <?php if ($item['cover_image']): ?>
-              <img src="<?= e(upload_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>" loading="lazy">
+              <img src="<?= e(upload_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>" loading="lazy" width="400" height="275">
             <?php else: ?>
               <div class="media-placeholder" data-label="<?= e(mb_substr($item['title'], 0, 1)) ?>"></div>
             <?php endif; ?>

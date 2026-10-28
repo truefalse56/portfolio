@@ -74,6 +74,7 @@ function h(?string $v): string
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
   <title>Восстановление доступа к БД</title>
   <style>
     :root { --ink:#14212b; --muted:#5b6b76; --accent:#0f766e; --bg:#f3f6f8; }

@@ -7,7 +7,14 @@ require __DIR__ . '/includes/bootstrap.php';
 $slug = trim((string) ($_GET['slug'] ?? ''));
 if ($slug === '') {
     http_response_code(404);
-    exit('Интеграция не найдена');
+    $pageTitle = 'Не найдено';
+    $metaDescription = 'Запрошенная интеграция не найдена.';
+    $robots = 'noindex, follow';
+    $canonicalPath = page_url('integrations');
+    require __DIR__ . '/templates/header.php';
+    echo '<section class="section"><div class="container"><h1>Интеграция не найдена</h1><p><a href="' . e(page_url('integrations')) . '">К списку интеграций</a></p></div></section>';
+    require __DIR__ . '/templates/footer.php';
+    exit;
 }
 
 $stmt = db()->prepare(
@@ -19,13 +26,50 @@ $item = $stmt->fetch();
 if (!$item) {
     http_response_code(404);
     $pageTitle = 'Не найдено';
+    $metaDescription = 'Запрошенная интеграция не найдена.';
+    $robots = 'noindex, follow';
+    $canonicalPath = page_url('integrations');
     require __DIR__ . '/templates/header.php';
-    echo '<section class="section"><div class="container"><h1>Интеграция не найдена</h1></div></section>';
+    echo '<section class="section"><div class="container"><h1>Интеграция не найдена</h1><p><a href="' . e(page_url('integrations')) . '">К списку интеграций</a></p></div></section>';
     require __DIR__ . '/templates/footer.php';
     exit;
 }
 
 $pageTitle = $item['title'];
+$metaDescription = $item['short_description']
+    ?: excerpt((string) $item['description'], 160);
+$canonicalPath = page_url('integrations', $item['slug']);
+$ogType = 'article';
+$ogImage = $item['cover_image'] ? upload_url($item['cover_image']) : '';
+$breadcrumbs = [
+    ['name' => 'Главная', 'url' => page_url('home')],
+    ['name' => 'Интеграции', 'url' => page_url('integrations')],
+    ['name' => $item['title']],
+];
+
+$techArticle = [
+    '@type' => 'TechArticle',
+    '@id' => absolute_url($canonicalPath) . '#article',
+    'headline' => $item['title'],
+    'name' => $item['title'],
+    'description' => $metaDescription,
+    'url' => absolute_url($canonicalPath),
+    'inLanguage' => 'ru-RU',
+    'author' => ['@id' => absolute_url() . '#person'],
+    'creator' => ['@id' => absolute_url() . '#person'],
+    'isPartOf' => ['@id' => absolute_url() . '#website'],
+    'about' => $item['category'] ?: 'Битрикс24 CRM',
+];
+if ($ogImage) {
+    $techArticle['image'] = absolute_url($ogImage);
+}
+
+$schemaGraphs = [
+    schema_person(),
+    schema_website(),
+    schema_breadcrumbs($breadcrumbs),
+    $techArticle,
+];
 
 $features = [];
 if (!empty($item['features'])) {
@@ -49,7 +93,8 @@ require __DIR__ . '/templates/header.php';
 <article>
   <section class="page-hero">
     <div class="container narrow">
-      <a class="text-link reveal" href="<?= e(base_url('integrations.php')) ?>">← Все интеграции</a>
+      <?= render_breadcrumbs($breadcrumbs) ?>
+      <a class="text-link reveal" href="<?= e(page_url('integrations')) ?>">← Все интеграции</a>
       <span class="chip reveal" style="--delay:.04s"><?= e($item['category']) ?></span>
       <h1 class="reveal" style="--delay:.08s"><?= e($item['title']) ?></h1>
       <p class="lead reveal" style="--delay:.12s"><?= e($item['short_description']) ?></p>
@@ -58,7 +103,7 @@ require __DIR__ . '/templates/header.php';
 
   <?php if ($item['cover_image']): ?>
     <section class="bleed-media reveal">
-      <img src="<?= e(upload_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>">
+      <img src="<?= e(upload_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>" width="1200" height="514">
     </section>
   <?php endif; ?>
 
@@ -108,7 +153,7 @@ require __DIR__ . '/templates/header.php';
           <?php foreach ($screenshots as $i => $shot): ?>
             <figure class="shot reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s">
               <a href="<?= e(upload_url($shot['image_path'])) ?>" target="_blank" rel="noopener">
-                <img src="<?= e(upload_url($shot['image_path'])) ?>" alt="<?= e($shot['caption'] ?: $item['title']) ?>" loading="lazy">
+                <img src="<?= e(upload_url($shot['image_path'])) ?>" alt="<?= e($shot['caption'] ?: $item['title']) ?>" loading="lazy" width="800" height="500">
               </a>
               <?php if ($shot['caption']): ?>
                 <figcaption><?= e($shot['caption']) ?></figcaption>

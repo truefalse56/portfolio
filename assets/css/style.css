@@ -490,6 +490,48 @@ p { margin: 0 0 1em; }
   z-index: 1;
 }
 
+.breadcrumbs {
+  margin: 0 0 1.25rem;
+}
+
+.breadcrumbs ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  content: "/";
+  color: var(--line);
+  margin-left: 0.15rem;
+}
+
+.breadcrumbs a {
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+.breadcrumbs a:hover {
+  color: var(--accent);
+}
+
+.breadcrumbs [aria-current="page"] span {
+  color: var(--ink);
+  font-weight: 600;
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1.1fr;

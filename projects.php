@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 require __DIR__ . '/includes/bootstrap.php';
 
-$pageTitle = 'Проекты';
+$pageTitle = 'Проекты на PHP и Bitrix';
+$metaDescription = 'Реализованные проекты на PHP, Bitrix Framework и Битрикс24 CRM — кейсы порталов, интеграций и кастомизации.';
+$canonicalPath = page_url('projects');
+$breadcrumbs = [
+    ['name' => 'Главная', 'url' => page_url('home')],
+    ['name' => 'Проекты'],
+];
 
 $projects = db()->query(
     'SELECT id, title, slug, short_description, stack, year, role, cover_image
@@ -12,11 +18,40 @@ $projects = db()->query(
      ORDER BY sort_order ASC, id DESC'
 )->fetchAll();
 
+$itemList = [];
+foreach ($projects as $i => $project) {
+    $itemList[] = [
+        '@type' => 'ListItem',
+        'position' => $i + 1,
+        'url' => absolute_url(page_url('projects', $project['slug'])),
+        'name' => $project['title'],
+    ];
+}
+
+$schemaGraphs = [
+    schema_person(),
+    schema_website(),
+    schema_breadcrumbs($breadcrumbs),
+    [
+        '@type' => 'CollectionPage',
+        '@id' => absolute_url($canonicalPath) . '#collection',
+        'url' => absolute_url($canonicalPath),
+        'name' => $pageTitle,
+        'description' => $metaDescription,
+        'isPartOf' => ['@id' => absolute_url() . '#website'],
+        'mainEntity' => [
+            '@type' => 'ItemList',
+            'itemListElement' => $itemList,
+        ],
+    ],
+];
+
 require __DIR__ . '/templates/header.php';
 ?>
 
 <section class="page-hero">
   <div class="container">
+    <?= render_breadcrumbs($breadcrumbs) ?>
     <p class="eyebrow reveal">Портфолио</p>
     <h1 class="reveal" style="--delay:.06s">Реализованные проекты</h1>
     <p class="lead reveal" style="--delay:.12s">Кейсы на PHP, Bitrix Framework и Битрикс24 — от порталов до CRM-интеграций.</p>
@@ -27,10 +62,10 @@ require __DIR__ . '/templates/header.php';
   <div class="container">
     <div class="work-list">
       <?php foreach ($projects as $i => $project): ?>
-        <a class="work-row reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s" href="<?= e(base_url('project.php?slug=' . urlencode($project['slug']))) ?>">
+        <a class="work-row reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s" href="<?= e(page_url('projects', $project['slug'])) ?>">
           <div class="work-media">
             <?php if ($project['cover_image']): ?>
-              <img src="<?= e(upload_url($project['cover_image'])) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
+              <img src="<?= e(upload_url($project['cover_image'])) ?>" alt="<?= e($project['title']) ?>" loading="lazy" width="360" height="270">
             <?php else: ?>
               <div class="media-placeholder" data-label="<?= e(mb_substr($project['title'], 0, 1)) ?>"></div>
             <?php endif; ?>
