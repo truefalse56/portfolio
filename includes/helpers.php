@@ -24,12 +24,12 @@ function base_url(string $path = ''): string
     static $base = null;
 
     if ($base === null) {
-        $script = $_SERVER['SCRIPT_NAME'] ?? '';
+        $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
         $dir = str_replace('\\', '/', dirname($script));
 
-        // /admin/... → корень сайта
-        if (str_contains($dir, '/admin')) {
-            $dir = preg_replace('#/admin(?:/.*)?$#', '', $dir) ?: '';
+        // Front controller: /index.php → корень; /subdir/index.php → /subdir
+        if (str_ends_with($script, '/index.php') || $script === '/index.php' || $script === 'index.php') {
+            $dir = str_replace('\\', '/', dirname($script));
         }
 
         $base = rtrim($dir, '/');
@@ -40,6 +40,12 @@ function base_url(string $path = ''): string
 
     $path = ltrim($path, '/');
     return $path === '' ? ($base === '' ? '/' : $base . '/') : $base . '/' . $path;
+}
+
+function admin_url(string $path = ''): string
+{
+    $path = ltrim($path, '/');
+    return $path === '' ? base_url('admin') : base_url('admin/' . $path);
 }
 
 function asset(string $path): string

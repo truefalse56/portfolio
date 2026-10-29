@@ -4,50 +4,15 @@ Options -Indexes
     RewriteEngine On
 
     # Защита служебных каталогов
-    RewriteRule ^(config|includes|sql|templates|storage)(/|$) - [F,L]
+    RewriteRule ^(config|includes|sql|templates|storage|app|vendor)(/|$) - [F,L]
 
-    # 301 со старых URL на ЧПУ (до пропуска реальных файлов)
-    RewriteCond %{THE_REQUEST} \s/+index\.php[\s?] [NC]
-    RewriteRule ^index\.php$ / [R=301,L]
-
-    RewriteCond %{THE_REQUEST} \s/+projects\.php[\s?] [NC]
-    RewriteRule ^projects\.php$ /projects [R=301,L]
-
-    RewriteCond %{THE_REQUEST} \s/+integrations\.php[\s?] [NC]
-    RewriteRule ^integrations\.php$ /integrations [R=301,L]
-
-    RewriteCond %{THE_REQUEST} \s/+hobbies\.php[\s?] [NC]
-    RewriteRule ^hobbies\.php$ /hobbies [R=301,L]
-
-    RewriteCond %{THE_REQUEST} \s/+certificates\.php[\s?] [NC]
-    RewriteRule ^certificates\.php$ /certificates [R=301,L]
-
-    RewriteCond %{THE_REQUEST} \s/+project\.php\?slug=([a-z0-9\-]+) [NC]
-    RewriteRule ^project\.php$ /projects/%1? [R=301,L]
-
-    RewriteCond %{THE_REQUEST} \s/+integration\.php\?slug=([a-z0-9\-]+) [NC]
-    RewriteRule ^integration\.php$ /integrations/%1? [R=301,L]
-
-    RewriteCond %{THE_REQUEST} \s/+hobby\.php\?slug=([a-z0-9\-]+) [NC]
-    RewriteRule ^hobby\.php$ /hobbies/%1? [R=301,L]
-
-    # Реальные файлы и каталоги
+    # Реальные файлы и каталоги (assets, favicon, fix-database.php, yandex verification…)
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # Sitemap и robots
-    RewriteRule ^sitemap\.xml$ sitemap.php [L,QSA]
-    RewriteRule ^robots\.txt$ robots.php [L,QSA]
-
-    # ЧПУ
-    RewriteRule ^projects/?$ projects.php [L,QSA]
-    RewriteRule ^projects/([a-z0-9\-]+)/?$ project.php?slug=$1 [L,QSA]
-    RewriteRule ^integrations/?$ integrations.php [L,QSA]
-    RewriteRule ^integrations/([a-z0-9\-]+)/?$ integration.php?slug=$1 [L,QSA]
-    RewriteRule ^hobbies/?$ hobbies.php [L,QSA]
-    RewriteRule ^hobbies/([a-z0-9\-]+)/?$ hobby.php?slug=$1 [L,QSA]
-    RewriteRule ^certificates/?$ certificates.php [L,QSA]
+    # Всё остальное — Slim front controller
+    RewriteRule ^ index.php [L,QSA]
 </IfModule>
 
 <IfModule mod_headers.c>

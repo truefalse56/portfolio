@@ -1,4 +1,4 @@
-# Админка доступна по HTTP, PHP разрешён
+﻿# Админка обслуживается Slim из index.php
 <IfModule mod_authz_core.c>
-    Require all granted
+    Require all denied
 </IfModule>
