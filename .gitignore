@@ -4,5 +4,7 @@
 !/assets/uploads/.gitkeep
 !/assets/uploads/.htaccess
 /composer.phar
+/storage/debug.flag
+/storage/error.log
 .idea
 .osp

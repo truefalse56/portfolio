@@ -6,9 +6,9 @@ Options -Indexes
     # Защита служебных каталогов
     RewriteRule ^(config|includes|sql|templates|storage|app|vendor)(/|$) - [F,L]
 
-    # Реальные файлы и каталоги (assets, favicon, fix-database.php, yandex verification…)
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
+    # Отдаём только реальные ФАЙЛЫ (css/js/uploads/favicon…).
+    # Каталоги вроде /admin/ не пропускаем — их обрабатывает Slim.
+    RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
     # Всё остальное — Slim front controller
