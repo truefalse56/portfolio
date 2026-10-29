@@ -108,20 +108,24 @@ require __DIR__ . '/templates/header.php';
   <?php endif; ?>
 
   <section class="section">
-    <div class="container detail-grid">
-      <div class="prose reveal">
-        <?= markdown_lite($item['description']) ?>
+    <div class="container">
+      <div class="row g-5 align-items-start">
+        <div class="col-lg-7 prose reveal">
+          <?= markdown_lite($item['description']) ?>
+        </div>
+        <?php if ($features): ?>
+          <div class="col-lg-5">
+            <aside class="feature-panel reveal" style="--delay:.1s">
+              <h2>Что сделано</h2>
+              <ul>
+                <?php foreach ($features as $feature): ?>
+                  <li><?= e((string) $feature) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </aside>
+          </div>
+        <?php endif; ?>
       </div>
-      <?php if ($features): ?>
-        <aside class="feature-panel reveal" style="--delay:.1s">
-          <h2>Что сделано</h2>
-          <ul>
-            <?php foreach ($features as $feature): ?>
-              <li><?= e((string) $feature) ?></li>
-            <?php endforeach; ?>
-          </ul>
-        </aside>
-      <?php endif; ?>
     </div>
   </section>
 
@@ -149,16 +153,18 @@ require __DIR__ . '/templates/header.php';
     <section class="section">
       <div class="container">
         <h2 class="reveal">Скриншоты</h2>
-        <div class="shot-grid">
+        <div class="row g-4 mt-1">
           <?php foreach ($screenshots as $i => $shot): ?>
-            <figure class="shot reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s">
-              <a href="<?= e(upload_url($shot['image_path'])) ?>" target="_blank" rel="noopener">
-                <img src="<?= e(upload_url($shot['image_path'])) ?>" alt="<?= e($shot['caption'] ?: $item['title']) ?>" loading="lazy" width="800" height="500">
-              </a>
-              <?php if ($shot['caption']): ?>
-                <figcaption><?= e($shot['caption']) ?></figcaption>
-              <?php endif; ?>
-            </figure>
+            <div class="col-md-6">
+              <figure class="shot reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s">
+                <a href="<?= e(upload_url($shot['image_path'])) ?>" target="_blank" rel="noopener">
+                  <img src="<?= e(upload_url($shot['image_path'])) ?>" alt="<?= e($shot['caption'] ?: $item['title']) ?>" loading="lazy" width="800" height="500">
+                </a>
+                <?php if ($shot['caption']): ?>
+                  <figcaption><?= e($shot['caption']) ?></figcaption>
+                <?php endif; ?>
+              </figure>
+            </div>
           <?php endforeach; ?>
         </div>
       </div>

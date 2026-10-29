@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="robots" content="noindex, nofollow">
   <title>Вход — Portfolio Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">
 </head>
 <body class="login-page">
@@ -38,12 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?= csrf_field() ?>
     <h1>Админ-панель</h1>
     <p>Управление проектами, интеграциями и грамотами.</p>
-    <?php if ($error): ?><div class="flash err"><?= e($error) ?></div><?php endif; ?>
-    <label>Логин</label>
-    <input type="text" name="username" required autofocus value="<?= e($_POST['username'] ?? '') ?>">
-    <label>Пароль</label>
-    <input type="password" name="password" required>
-    <p style="margin-top:1.25rem"><button class="btn" type="submit" style="width:100%">Войти</button></p>
+    <?php if ($error): ?>
+      <div class="alert alert-danger" role="alert"><?= e($error) ?></div>
+    <?php endif; ?>
+    <div class="mb-3">
+      <label class="form-label">Логин</label>
+      <input class="form-control" type="text" name="username" required autofocus value="<?= e($_POST['username'] ?? '') ?>">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Пароль</label>
+      <input class="form-control" type="password" name="password" required>
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Войти</button>
   </form>
 </body>
 </html>

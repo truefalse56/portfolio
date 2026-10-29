@@ -12,36 +12,41 @@ $location = setting('location', '');
   </main>
 
   <footer class="site-footer" id="contact">
-    <div class="container footer-grid">
-      <div class="footer-brand reveal">
-        <p class="eyebrow">Контакты</p>
-        <h2><?= e($fullName) ?></h2>
-        <p class="lead"><?= e(setting('title', 'Fullstack Web Разработчик')) ?>. Готов обсудить проект, интеграцию или доработку на Bitrix / Битрикс24.</p>
+    <div class="container">
+      <div class="row g-4 mb-5">
+        <div class="col-lg-7 reveal">
+          <p class="eyebrow">Контакты</p>
+          <h2><?= e($fullName) ?></h2>
+          <p class="lead mb-0"><?= e(setting('title', 'Fullstack Web Разработчик')) ?>. Готов обсудить проект, интеграцию или доработку на Bitrix / Битрикс24.</p>
+        </div>
+        <div class="col-lg-5 reveal" style="--delay:.1s">
+          <div class="footer-links d-flex flex-column align-items-start gap-2">
+            <?php if ($email): ?>
+              <a href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
+            <?php endif; ?>
+            <?php if ($phone): ?>
+              <a href="tel:<?= e(preg_replace('/\s+/', '', $phone) ?? $phone) ?>"><?= e($phone) ?></a>
+            <?php endif; ?>
+            <?php if ($telegram): ?>
+              <a href="<?= e(str_starts_with($telegram, 'http') ? $telegram : 'https://t.me/' . ltrim($telegram, '@')) ?>" target="_blank" rel="noopener">Telegram</a>
+            <?php endif; ?>
+            <?php if ($github): ?>
+              <a href="<?= e($github) ?>" target="_blank" rel="noopener">GitHub</a>
+            <?php endif; ?>
+            <?php if ($location): ?>
+              <span><?= e($location) ?></span>
+            <?php endif; ?>
+          </div>
+        </div>
       </div>
-      <div class="footer-links reveal" style="--delay:.1s">
-        <?php if ($email): ?>
-          <a href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
-        <?php endif; ?>
-        <?php if ($phone): ?>
-          <a href="tel:<?= e(preg_replace('/\s+/', '', $phone) ?? $phone) ?>"><?= e($phone) ?></a>
-        <?php endif; ?>
-        <?php if ($telegram): ?>
-          <a href="<?= e(str_starts_with($telegram, 'http') ? $telegram : 'https://t.me/' . ltrim($telegram, '@')) ?>" target="_blank" rel="noopener">Telegram</a>
-        <?php endif; ?>
-        <?php if ($github): ?>
-          <a href="<?= e($github) ?>" target="_blank" rel="noopener">GitHub</a>
-        <?php endif; ?>
-        <?php if ($location): ?>
-          <span><?= e($location) ?></span>
-        <?php endif; ?>
+      <div class="footer-bottom d-flex justify-content-between flex-wrap gap-2">
+        <span>© <?= date('Y') ?> <?= e($fullName) ?></span>
+        <span>PHP · Bitrix Framework · Битрикс24</span>
       </div>
-    </div>
-    <div class="container footer-bottom">
-      <span>© <?= date('Y') ?> <?= e($fullName) ?></span>
-      <span>PHP · Bitrix Framework · Битрикс24</span>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="<?= e(asset('js/main.js')) ?>"></script>

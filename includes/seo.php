@@ -234,14 +234,14 @@ function render_breadcrumbs(array $crumbs): string
         return '';
     }
 
-    $html = '<nav class="breadcrumbs" aria-label="Хлебные крошки"><ol>';
+    $html = '<nav aria-label="Хлебные крошки"><ol class="breadcrumb">';
     $last = count($crumbs) - 1;
     foreach ($crumbs as $i => $crumb) {
         $name = e($crumb['name']);
         if ($i === $last || empty($crumb['url'])) {
-            $html .= '<li aria-current="page"><span>' . $name . '</span></li>';
+            $html .= '<li class="breadcrumb-item active" aria-current="page">' . $name . '</li>';
         } else {
-            $html .= '<li><a href="' . e($crumb['url']) . '">' . $name . '</a></li>';
+            $html .= '<li class="breadcrumb-item"><a href="' . e($crumb['url']) . '">' . $name . '</a></li>';
         }
     }
     $html .= '</ol></nav>';

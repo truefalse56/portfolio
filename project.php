@@ -123,16 +123,18 @@ require __DIR__ . '/templates/header.php';
     <section class="section section-tint">
       <div class="container">
         <h2 class="reveal">Скриншоты</h2>
-        <div class="shot-grid">
+        <div class="row g-4 mt-1">
           <?php foreach ($screenshots as $i => $shot): ?>
-            <figure class="shot reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s">
-              <a href="<?= e(upload_url($shot['image_path'])) ?>" target="_blank" rel="noopener">
-                <img src="<?= e(upload_url($shot['image_path'])) ?>" alt="<?= e($shot['caption'] ?: $project['title']) ?>" loading="lazy" width="800" height="500">
-              </a>
-              <?php if ($shot['caption']): ?>
-                <figcaption><?= e($shot['caption']) ?></figcaption>
-              <?php endif; ?>
-            </figure>
+            <div class="col-md-6">
+              <figure class="shot reveal" style="--delay:<?= e((string) ($i * 0.06)) ?>s">
+                <a href="<?= e(upload_url($shot['image_path'])) ?>" target="_blank" rel="noopener">
+                  <img src="<?= e(upload_url($shot['image_path'])) ?>" alt="<?= e($shot['caption'] ?: $project['title']) ?>" loading="lazy" width="800" height="500">
+                </a>
+                <?php if ($shot['caption']): ?>
+                  <figcaption><?= e($shot['caption']) ?></figcaption>
+                <?php endif; ?>
+              </figure>
+            </div>
           <?php endforeach; ?>
         </div>
       </div>

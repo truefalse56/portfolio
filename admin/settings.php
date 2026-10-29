@@ -73,62 +73,62 @@ foreach ($keys as $key) {
 require __DIR__ . '/_layout_top.php';
 ?>
 
-<form class="panel" method="post" style="margin-bottom:1.25rem">
+<form class="panel mb-4" method="post">
   <?= csrf_field() ?>
   <input type="hidden" name="section" value="profile">
   <h2>Публичный профиль</h2>
-  <div class="form-grid">
-    <div>
-      <label>ФИО</label>
-      <input type="text" name="full_name" value="<?= e($values['full_name']) ?>">
+  <div class="row g-3 mt-1">
+    <div class="col-md-6">
+      <label class="form-label">ФИО</label>
+      <input class="form-control" type="text" name="full_name" value="<?= e($values['full_name']) ?>">
     </div>
-    <div>
-      <label>Должность / роль</label>
-      <input type="text" name="title" value="<?= e($values['title']) ?>">
+    <div class="col-md-6">
+      <label class="form-label">Должность / роль</label>
+      <input class="form-control" type="text" name="title" value="<?= e($values['title']) ?>">
     </div>
-    <div class="full">
-      <label>Подзаголовок</label>
-      <input type="text" name="subtitle" value="<?= e($values['subtitle']) ?>">
+    <div class="col-12">
+      <label class="form-label">Подзаголовок</label>
+      <input class="form-control" type="text" name="subtitle" value="<?= e($values['subtitle']) ?>">
     </div>
-    <div class="full">
-      <label>О себе</label>
-      <textarea name="about"><?= e($values['about']) ?></textarea>
+    <div class="col-12">
+      <label class="form-label">О себе</label>
+      <textarea class="form-control" name="about"><?= e($values['about']) ?></textarea>
     </div>
-    <div>
-      <label>Email</label>
-      <input type="email" name="email" value="<?= e($values['email']) ?>">
+    <div class="col-md-6">
+      <label class="form-label">Email</label>
+      <input class="form-control" type="email" name="email" value="<?= e($values['email']) ?>">
     </div>
-    <div>
-      <label>Телефон</label>
-      <input type="text" name="phone" value="<?= e($values['phone']) ?>">
+    <div class="col-md-6">
+      <label class="form-label">Телефон</label>
+      <input class="form-control" type="text" name="phone" value="<?= e($values['phone']) ?>">
     </div>
-    <div>
-      <label>Telegram</label>
-      <input type="text" name="telegram" value="<?= e($values['telegram']) ?>" placeholder="@username или ссылка">
+    <div class="col-md-6">
+      <label class="form-label">Telegram</label>
+      <input class="form-control" type="text" name="telegram" value="<?= e($values['telegram']) ?>" placeholder="@username или ссылка">
     </div>
-    <div>
-      <label>GitHub</label>
-      <input type="url" name="github" value="<?= e($values['github']) ?>">
+    <div class="col-md-6">
+      <label class="form-label">GitHub</label>
+      <input class="form-control" type="url" name="github" value="<?= e($values['github']) ?>">
     </div>
-    <div>
-      <label>Локация</label>
-      <input type="text" name="location" value="<?= e($values['location']) ?>">
+    <div class="col-md-6">
+      <label class="form-label">Локация</label>
+      <input class="form-control" type="text" name="location" value="<?= e($values['location']) ?>">
     </div>
-    <div>
-      <label>Текст кнопки в hero</label>
-      <input type="text" name="hero_cta_text" value="<?= e($values['hero_cta_text']) ?>">
+    <div class="col-md-6">
+      <label class="form-label">Текст кнопки в hero</label>
+      <input class="form-control" type="text" name="hero_cta_text" value="<?= e($values['hero_cta_text']) ?>">
     </div>
-    <div>
-      <label>Ссылка кнопки hero</label>
-      <input type="text" name="hero_cta_link" value="<?= e($values['hero_cta_link']) ?>">
+    <div class="col-md-6">
+      <label class="form-label">Ссылка кнопки hero</label>
+      <input class="form-control" type="text" name="hero_cta_link" value="<?= e($values['hero_cta_link']) ?>">
     </div>
-    <div class="full">
-      <label>Meta description</label>
-      <input type="text" name="meta_description" value="<?= e($values['meta_description']) ?>">
+    <div class="col-12">
+      <label class="form-label">Meta description</label>
+      <input class="form-control" type="text" name="meta_description" value="<?= e($values['meta_description']) ?>">
     </div>
   </div>
-  <div class="actions" style="margin-top:1.25rem">
-    <button class="btn" type="submit">Сохранить профиль</button>
+  <div class="mt-4">
+    <button class="btn btn-primary" type="submit">Сохранить профиль</button>
   </div>
 </form>
 
@@ -136,22 +136,22 @@ require __DIR__ . '/_layout_top.php';
   <?= csrf_field() ?>
   <input type="hidden" name="section" value="password">
   <h2>Смена пароля</h2>
-  <div class="form-grid">
-    <div class="full">
-      <label>Текущий пароль</label>
-      <input type="password" name="current_password" required autocomplete="current-password">
+  <div class="row g-3 mt-1">
+    <div class="col-12">
+      <label class="form-label">Текущий пароль</label>
+      <input class="form-control" type="password" name="current_password" required autocomplete="current-password">
     </div>
-    <div>
-      <label>Новый пароль</label>
-      <input type="password" name="new_password" required minlength="6" autocomplete="new-password">
+    <div class="col-md-6">
+      <label class="form-label">Новый пароль</label>
+      <input class="form-control" type="password" name="new_password" required minlength="6" autocomplete="new-password">
     </div>
-    <div>
-      <label>Подтверждение</label>
-      <input type="password" name="confirm_password" required minlength="6" autocomplete="new-password">
+    <div class="col-md-6">
+      <label class="form-label">Подтверждение</label>
+      <input class="form-control" type="password" name="confirm_password" required minlength="6" autocomplete="new-password">
     </div>
   </div>
-  <div class="actions" style="margin-top:1.25rem">
-    <button class="btn" type="submit">Обновить пароль</button>
+  <div class="mt-4">
+    <button class="btn btn-primary" type="submit">Обновить пароль</button>
   </div>
 </form>
 

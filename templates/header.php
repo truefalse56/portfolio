@@ -32,6 +32,9 @@ if ($schemaGraphs === []) {
 $uriPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $uriPath = rtrim($uriPath, '/') ?: '/';
 $isHome = $uriPath === '/' || str_ends_with($uriPath, '/index.php');
+
+$nameParts = explode(' ', $fullName);
+$brandName = ($nameParts[0] ?? '') . ' ' . ($nameParts[1] ?? '');
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -68,8 +71,11 @@ $isHome = $uriPath === '/' || str_ends_with($uriPath, '/index.php');
   <script>
     (function () {
       try {
-        if (localStorage.getItem('theme') === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'dark');
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-bs-theme', t);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-bs-theme', 'dark');
         }
       } catch (e) {}
     })();
@@ -77,49 +83,74 @@ $isHome = $uriPath === '/' || str_ends_with($uriPath, '/index.php');
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
   <?= render_json_ld($schemaGraphs) ?>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
-  <header class="site-header" data-header>
-    <div class="container header-inner">
-      <a class="brand" href="<?= e(page_url('home')) ?>">
-        <span class="brand-mark">KV</span>
-        <span class="brand-text">
-          <strong><?= e(explode(' ', $fullName)[0] . ' ' . (explode(' ', $fullName)[1] ?? '')) ?></strong>
-          <small><?= e($title) ?></small>
-        </span>
-      </a>
-      <div class="header-end">
-        <button
-          class="theme-toggle"
-          type="button"
-          aria-label="Переключить тему"
-          title="Сменить тему"
-          data-theme-toggle
-        >
-          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21 14.3A8.4 8.4 0 0 1 9.7 3 7.2 7.2 0 1 0 21 14.3z"/>
-          </svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
-          </svg>
-        </button>
-        <button class="nav-toggle" type="button" aria-label="Меню" data-nav-toggle>
-          <span></span><span></span>
-        </button>
-        <nav class="site-nav" data-nav>
-          <a href="<?= e(page_url('home')) ?>" class="<?= $isHome ? 'is-active' : '' ?>">Главная</a>
-          <a href="<?= e(page_url('projects')) ?>" class="<?= is_active_nav('projects') ? 'is-active' : '' ?>">Проекты</a>
-          <a href="<?= e(page_url('integrations')) ?>" class="<?= is_active_nav('integrations') ? 'is-active' : '' ?>">Интеграции</a>
-          <a href="<?= e(page_url('hobbies')) ?>" class="<?= is_active_nav('hobbies') ? 'is-active' : '' ?>">Хобби</a>
-          <a href="<?= e(page_url('certificates')) ?>" class="<?= is_active_nav('certificates') ? 'is-active' : '' ?>">Сертификаты</a>
-          <a class="nav-cta" href="#contact">Связаться</a>
-        </nav>
+  <header class="site-header sticky-top" data-header>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container header-inner">
+        <a class="brand navbar-brand mb-0" href="<?= e(page_url('home')) ?>">
+          <span class="brand-mark">KV</span>
+          <span class="brand-text">
+            <strong><?= e(trim($brandName)) ?></strong>
+            <small><?= e($title) ?></small>
+          </span>
+        </a>
+        <div class="header-end d-flex align-items-center gap-2 ms-auto">
+          <button
+            class="theme-toggle"
+            type="button"
+            aria-label="Переключить тему"
+            title="Сменить тему"
+            data-theme-toggle
+          >
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 14.3A8.4 8.4 0 0 1 9.7 3 7.2 7.2 0 1 0 21 14.3z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+            </svg>
+          </button>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#siteNav"
+            aria-controls="siteNav"
+            aria-expanded="false"
+            aria-label="Меню"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse flex-grow-0" id="siteNav">
+            <ul class="navbar-nav site-nav align-items-lg-center gap-lg-1">
+              <li class="nav-item">
+                <a class="nav-link <?= $isHome ? 'active' : '' ?>" href="<?= e(page_url('home')) ?>">Главная</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?= is_active_nav('projects') ? 'active' : '' ?>" href="<?= e(page_url('projects')) ?>">Проекты</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?= is_active_nav('integrations') ? 'active' : '' ?>" href="<?= e(page_url('integrations')) ?>">Интеграции</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?= is_active_nav('hobbies') ? 'active' : '' ?>" href="<?= e(page_url('hobbies')) ?>">Хобби</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?= is_active_nav('certificates') ? 'active' : '' ?>" href="<?= e(page_url('certificates')) ?>">Сертификаты</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link nav-cta" href="#contact">Связаться</a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
   </header>
   <main>

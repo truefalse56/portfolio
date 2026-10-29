@@ -7,7 +7,7 @@ require_auth();
 
 $pageTitle = 'Хобби';
 $current = 'hobbies';
-$topAction = '<a class="btn" href="' . e(base_url('admin/hobby-edit.php')) . '">+ Добавить</a>';
+$topAction = '<a class="btn btn-primary" href="' . e(base_url('admin/hobby-edit.php')) . '">+ Добавить</a>';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delete') {
     if (!verify_csrf($_POST['_csrf'] ?? null)) {
@@ -40,8 +40,8 @@ $items = db()->query(
 require __DIR__ . '/_layout_top.php';
 ?>
 
-<div class="panel">
-  <table>
+<div class="panel table-responsive">
+  <table class="table align-middle">
     <thead>
       <tr>
         <th></th>
@@ -62,23 +62,23 @@ require __DIR__ . '/_layout_top.php';
           </td>
           <td>
             <strong><?= e($item['title']) ?></strong><br>
-            <span style="color:var(--muted);font-size:.8rem"><?= e($item['slug']) ?></span>
+            <span class="slug-muted"><?= e($item['slug']) ?></span>
           </td>
           <td><?= (int) $item['images_count'] ?></td>
           <td>
-            <span class="badge <?= $item['is_published'] ? '' : 'off' ?>">
+            <span class="badge-status <?= $item['is_published'] ? '' : 'off' ?>">
               <?= $item['is_published'] ? 'Опубликован' : 'Черновик' ?>
             </span>
           </td>
           <td><?= (int) $item['sort_order'] ?></td>
           <td>
-            <div class="actions">
-              <a class="btn btn-ghost" href="<?= e(base_url('admin/hobby-edit.php?id=' . $item['id'])) ?>">Изменить</a>
-              <form method="post" style="display:inline">
+            <div class="d-flex flex-wrap gap-2">
+              <a class="btn btn-ghost btn-sm" href="<?= e(base_url('admin/hobby-edit.php?id=' . $item['id'])) ?>">Изменить</a>
+              <form method="post" class="d-inline">
                 <?= csrf_field() ?>
                 <input type="hidden" name="action" value="delete">
                 <input type="hidden" name="id" value="<?= (int) $item['id'] ?>">
-                <button class="btn btn-danger" type="submit" data-confirm="Удалить запись?">Удалить</button>
+                <button class="btn btn-outline-danger btn-sm" type="submit" data-confirm="Удалить запись?">Удалить</button>
               </form>
             </div>
           </td>
