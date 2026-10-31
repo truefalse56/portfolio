@@ -28,7 +28,7 @@
 
 1. Залейте файлы **включая** каталог `vendor/` (или выполните `composer install --no-dev` локально и залейте результат).
 2. Убедитесь, что `assets/uploads` и `storage` доступны для записи.
-3. Настройте MySQL в `config/database.local.php` (не перезаписывайте его при деплое). При сбое БД откройте `fix-database.php`, затем удалите его.
+3. Доступы к MySQL хранятся в `config/database.local.php`. Этот файл не в git, при заливке его нельзя затирать.
 4. Document root должен указывать на корень проекта (где лежит `index.php`). Нужен `mod_rewrite`.
 5. Войдите в `/admin/login`.
 
@@ -58,5 +58,5 @@ composer install
 
 - Пароли через `password_hash`
 - CSRF в админ-формах
-- Каталоги `app`, `config`, `includes`, `sql`, `storage`, `templates`, `vendor` закрыты через `.htaccess`
+- Каталоги `app`, `config`, `includes`, `storage`, `templates`, `vendor` закрыты через `.htaccess`
 - В `assets/uploads` запрещено выполнение PHP

@@ -20,12 +20,10 @@ Allow: /
 Disallow: /admin/
 Disallow: /config/
 Disallow: /includes/
-Disallow: /sql/
 Disallow: /templates/
 Disallow: /storage/
 Disallow: /app/
 Disallow: /vendor/
-Disallow: /fix-database.php
 
 Sitemap: {$sitemap}
 

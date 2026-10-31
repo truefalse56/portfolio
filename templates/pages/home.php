@@ -20,7 +20,7 @@
     <div class="row g-5 align-items-start">
       <div class="col-lg-5 reveal">
         <p class="eyebrow">О разработчике</p>
-        <h2>Решения на Bitrix,<br>которые работают в продакшене</h2>
+        <h2>Решения для бизнеса,<br>которые работают в продакшене</h2>
       </div>
       <div class="col-lg-7 reveal" style="--delay:.12s">
         <p class="lead"><?= nl2br(e($about)) ?></p>
@@ -28,8 +28,8 @@
           <li>PHP 8.x / Bitrix Framework</li>
           <li>Битрикс24 CRM: события, REST, placements</li>
           <li>Кастомизация публичной части</li>
-          <li>Валидация полей и бизнес-правила</li>
-          <li>MySQL, JavaScript, API-интеграции</li>
+          <li>Валидация и бизнес-правила</li>
+          <li>MySQL, ClickHouse ,JavaScript, API-интеграции</li>
         </ul>
       </div>
     </div>
