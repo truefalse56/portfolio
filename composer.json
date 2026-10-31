@@ -16,8 +16,7 @@
       "includes/seo.php",
       "includes/db.php",
       "includes/auth.php",
-      "includes/upload.php",
-      "includes/migrate.php"
+      "includes/upload.php"
     ]
   },
   "config": {

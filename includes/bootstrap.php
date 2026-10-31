@@ -13,5 +13,3 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
         'cookie_samesite' => 'Lax',
     ]);
 }
-
-run_migrations();
