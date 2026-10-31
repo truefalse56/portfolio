@@ -133,6 +133,7 @@ final class BlogController
             'ogImage' => $ogImage,
             'breadcrumbs' => $breadcrumbs,
             'item' => $item,
+            'loadCodeHighlight' => true,
             'schemaGraphs' => [
                 schema_person(),
                 schema_website(),

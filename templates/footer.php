@@ -46,12 +46,15 @@ $location = setting('location', '');
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="<?= e(asset('js/main.js')) ?>"></script>
+  <script src="<?= e(asset('vendor/bootstrap/bootstrap.bundle.min.js')) ?>" defer></script>
+  <?php if (!empty($loadCodeHighlight)): ?>
+  <script src="<?= e(asset('vendor/prism/prism-core.min.js')) ?>" defer></script>
+  <script src="<?= e(asset('vendor/prism/prism-autoloader.min.js')) ?>" defer></script>
+  <?php endif; ?>
+  <script src="<?= e(asset('js/main.js')) ?>" defer></script>
 <!-- Yandex.Metrika counter -->
-<script type="text/javascript">
+<script>
+  window.addEventListener('load', function () {
     (function(m,e,t,r,i,k,a){
         m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
         m[i].l=1*new Date();
@@ -60,6 +63,7 @@ $location = setting('location', '');
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=113839848', 'ym');
 
     ym(113839848, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  });
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/113839848" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->

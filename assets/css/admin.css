@@ -8,7 +8,7 @@
   --danger: #b42318;
   --ok: #067647;
   --font: "Manrope", system-ui, sans-serif;
-  --display: "Syne", system-ui, sans-serif;
+  --display: "Syne", "Manrope", system-ui, sans-serif;
   --sidebar: 240px;
 
   --bs-body-font-family: var(--font);

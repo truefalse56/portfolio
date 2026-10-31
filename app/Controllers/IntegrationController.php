@@ -127,6 +127,7 @@ final class IntegrationController
             'breadcrumbs' => $breadcrumbs,
             'item' => $item,
             'features' => $features,
+            'loadCodeHighlight' => true,
             'screenshots' => $shots->fetchAll(),
             'lang' => $lang,
             'schemaGraphs' => [
