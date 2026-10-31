@@ -4,7 +4,7 @@ Options -Indexes
     RewriteEngine On
 
     # Защита служебных каталогов
-    RewriteRule ^(config|includes|templates|storage|app|vendor)(/|$) - [F,L]
+    RewriteRule ^(config|includes|sql|templates|storage|app|vendor)(/|$) - [F,L]
 
     # Отдаём только реальные ФАЙЛЫ (css/js/uploads/favicon…).
     # Каталоги вроде /admin/ не пропускаем — их обрабатывает Slim.
