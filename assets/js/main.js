@@ -63,20 +63,43 @@
     revealEls.forEach((el) => el.classList.add("is-in"));
   }
 
+  const copyText = async (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "0";
+    area.style.left = "-9999px";
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    area.remove();
+    if (!ok) {
+      throw new Error("copy failed");
+    }
+  };
+
   document.querySelectorAll("[data-copy]").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const block = btn.closest(".code-block");
       const code = block?.querySelector("code");
       if (!code) return;
+      const prev = btn.textContent;
       try {
-        await navigator.clipboard.writeText(code.textContent || "");
-        const prev = btn.textContent;
+        await copyText(code.textContent || "");
         btn.textContent = "Скопировано";
         setTimeout(() => {
           btn.textContent = prev;
         }, 1600);
       } catch {
         btn.textContent = "Ошибка";
+        setTimeout(() => {
+          btn.textContent = prev;
+        }, 1600);
       }
     });
   });

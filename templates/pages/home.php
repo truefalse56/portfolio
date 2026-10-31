@@ -97,6 +97,44 @@
   </div>
 </section>
 
+<?php if ($posts): ?>
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">Блог</p>
+        <h2>Заметки и определения</h2>
+      </div>
+      <a class="text-link" href="<?= e(page_url('blog')) ?>">Все статьи</a>
+    </div>
+    <div class="row g-4">
+      <?php foreach ($posts as $i => $item): ?>
+        <?php
+          $cardExcerpt = $item['excerpt'] !== ''
+              ? $item['excerpt']
+              : article_excerpt((string) $item['content'], 180);
+        ?>
+        <div class="col-md-6 col-xl-4">
+          <a class="blog-card reveal" style="--delay:<?= e((string) ($i * 0.07)) ?>s" href="<?= e(page_url('blog', $item['slug'])) ?>">
+            <?php if ($item['cover_image']): ?>
+              <div class="blog-card-media">
+                <img src="<?= e(upload_url($item['cover_image'])) ?>" alt="<?= e($item['title']) ?>" loading="lazy" width="640" height="360">
+              </div>
+            <?php endif; ?>
+            <div class="blog-card-body">
+              <time datetime="<?= e(post_date_iso($item)) ?>"><?= e(post_date($item)) ?></time>
+              <h3><?= e($item['title']) ?></h3>
+              <p><?= e($cardExcerpt) ?></p>
+              <span class="text-link">Читать</span>
+            </div>
+          </a>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <?php if ($hobbies): ?>
 <section class="section">
   <div class="container">

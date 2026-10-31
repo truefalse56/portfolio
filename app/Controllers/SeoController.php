@@ -51,6 +51,7 @@ TXT;
         $add(page_url('projects'), 'weekly', '0.9');
         $add(page_url('integrations'), 'weekly', '0.9');
         $add(page_url('hobbies'), 'monthly', '0.6');
+        $add(page_url('blog'), 'weekly', '0.8');
         $add(page_url('certificates'), 'monthly', '0.7');
 
         try {
@@ -65,6 +66,10 @@ TXT;
             foreach (db()->query('SELECT slug, updated_at, created_at FROM hobbies WHERE is_published = 1 ORDER BY sort_order ASC, id DESC')->fetchAll() as $row) {
                 $mod = $row['updated_at'] ?? $row['created_at'] ?? null;
                 $add(page_url('hobbies', $row['slug']), 'monthly', '0.5', $mod ? date('Y-m-d', strtotime((string) $mod) ?: time()) : null);
+            }
+            foreach (db()->query('SELECT slug, updated_at, published_at, created_at FROM posts WHERE is_published = 1 ORDER BY COALESCE(published_at, created_at) DESC, id DESC')->fetchAll() as $row) {
+                $mod = $row['updated_at'] ?? $row['published_at'] ?? $row['created_at'] ?? null;
+                $add(page_url('blog', $row['slug']), 'monthly', '0.7', $mod ? date('Y-m-d', strtotime((string) $mod) ?: time()) : null);
             }
         } catch (\Throwable) {
             // empty sections ok

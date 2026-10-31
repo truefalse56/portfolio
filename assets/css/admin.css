@@ -249,6 +249,12 @@ textarea.form-control.code {
   font-size: 0.85rem;
 }
 
+textarea.form-control.article {
+  min-height: 420px;
+  line-height: 1.55;
+  tab-size: 4;
+}
+
 .form-text { color: var(--muted); font-size: 0.8rem; }
 
 .thumb {

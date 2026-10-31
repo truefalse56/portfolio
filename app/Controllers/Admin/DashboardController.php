@@ -19,6 +19,7 @@ final class DashboardController
                 'projects' => (int) db()->query('SELECT COUNT(*) FROM projects')->fetchColumn(),
                 'integrations' => (int) db()->query('SELECT COUNT(*) FROM integrations')->fetchColumn(),
                 'hobbies' => (int) db()->query('SELECT COUNT(*) FROM hobbies')->fetchColumn(),
+                'posts' => (int) db()->query('SELECT COUNT(*) FROM posts')->fetchColumn(),
                 'certificates' => (int) db()->query('SELECT COUNT(*) FROM certificates')->fetchColumn(),
             ],
         ]);

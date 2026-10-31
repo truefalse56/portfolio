@@ -139,6 +139,9 @@ $brandName = ($nameParts[0] ?? '') . ' ' . ($nameParts[1] ?? '');
                 <a class="nav-link <?= is_active_nav('integrations') ? 'active' : '' ?>" href="<?= e(page_url('integrations')) ?>">Интеграции</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link <?= is_active_nav('blog') ? 'active' : '' ?>" href="<?= e(page_url('blog')) ?>">Блог</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link <?= is_active_nav('hobbies') ? 'active' : '' ?>" href="<?= e(page_url('hobbies')) ?>">Хобби</a>
               </li>
               <li class="nav-item">

@@ -3,6 +3,7 @@
 SET NAMES utf8mb4;
 
 DROP TABLE IF EXISTS `hobby_images`;
+DROP TABLE IF EXISTS `posts`;
 DROP TABLE IF EXISTS `integration_screenshots`;
 DROP TABLE IF EXISTS `project_screenshots`;
 DROP TABLE IF EXISTS `hobbies`;
@@ -148,6 +149,22 @@ CREATE TABLE `hobby_images` (
   KEY `idx_hobby_images_hobby` (`hobby_id`),
   CONSTRAINT `fk_hobby_images_hobby`
     FOREIGN KEY (`hobby_id`) REFERENCES `hobbies` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `posts` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(200) NOT NULL,
+  `slug` VARCHAR(220) NOT NULL,
+  `excerpt` VARCHAR(500) NOT NULL DEFAULT '',
+  `content` MEDIUMTEXT NOT NULL,
+  `cover_image` VARCHAR(255) NULL,
+  `published_at` DATETIME NULL,
+  `is_published` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_posts_slug` (`slug`),
+  KEY `idx_posts_published_date` (`is_published`, `published_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `projects`

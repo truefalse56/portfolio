@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 use App\Controllers\Admin\AuthController;
+use App\Controllers\Admin\BlogAdminController;
 use App\Controllers\Admin\CertificateAdminController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\HobbyAdminController;
 use App\Controllers\Admin\IntegrationAdminController;
 use App\Controllers\Admin\ProjectAdminController;
 use App\Controllers\Admin\SettingsController;
+use App\Controllers\BlogController;
 use App\Controllers\CertificateController;
 use App\Controllers\HobbyController;
 use App\Controllers\HomeController;
@@ -26,6 +28,7 @@ return static function (App $app): void {
         '/projects.php' => '/projects',
         '/integrations.php' => '/integrations',
         '/hobbies.php' => '/hobbies',
+        '/blog.php' => '/blog',
         '/certificates.php' => '/certificates',
         '/admin/login.php' => '/admin/login',
         '/admin/logout.php' => '/admin/logout',
@@ -79,6 +82,8 @@ return static function (App $app): void {
     $app->get('/integrations/{slug}', [IntegrationController::class, 'show']);
     $app->get('/hobbies', [HobbyController::class, 'index']);
     $app->get('/hobbies/{slug}', [HobbyController::class, 'show']);
+    $app->get('/blog', [BlogController::class, 'index']);
+    $app->get('/blog/{slug}', [BlogController::class, 'show']);
     $app->get('/certificates', [CertificateController::class, 'index']);
     $app->get('/robots.txt', [SeoController::class, 'robots']);
     $app->get('/sitemap.xml', [SeoController::class, 'sitemap']);
@@ -104,6 +109,10 @@ return static function (App $app): void {
         $group->map(['GET', 'POST'], '/hobbies', [HobbyAdminController::class, 'index']);
         $group->map(['GET', 'POST'], '/hobbies/create', [HobbyAdminController::class, 'create']);
         $group->map(['GET', 'POST'], '/hobbies/{id:[0-9]+}/edit', [HobbyAdminController::class, 'edit']);
+
+        $group->map(['GET', 'POST'], '/blog', [BlogAdminController::class, 'index']);
+        $group->map(['GET', 'POST'], '/blog/create', [BlogAdminController::class, 'create']);
+        $group->map(['GET', 'POST'], '/blog/{id:[0-9]+}/edit', [BlogAdminController::class, 'edit']);
 
         $group->map(['GET', 'POST'], '/certificates', [CertificateAdminController::class, 'index']);
         $group->map(['GET', 'POST'], '/certificates/create', [CertificateAdminController::class, 'create']);

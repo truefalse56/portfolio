@@ -30,6 +30,12 @@ final class HomeController
              ORDER BY sort_order ASC, id DESC LIMIT 3'
         )->fetchAll();
 
+        $posts = db()->query(
+            'SELECT id, title, slug, excerpt, content, cover_image, published_at, created_at
+             FROM posts WHERE is_published = 1
+             ORDER BY COALESCE(published_at, created_at) DESC, id DESC LIMIT 3'
+        )->fetchAll();
+
         $fullName = setting('full_name', 'Килин Вячеслав Александрович');
         $title = setting('title', 'Fullstack Web Разработчик');
         $subtitle = setting('subtitle', 'PHP · Bitrix Framework · Битрикс24 CRM');
@@ -47,6 +53,7 @@ final class HomeController
             'projects' => $projects,
             'integrations' => $integrations,
             'hobbies' => $hobbies,
+            'posts' => $posts,
             'fullName' => $fullName,
             'title' => $title,
             'subtitle' => $subtitle,

@@ -25,6 +25,7 @@ $current = $current ?? '';
       <a class="nav-link <?= $current === 'dashboard' ? 'active' : '' ?>" href="<?= e(admin_url()) ?>">Обзор</a>
       <a class="nav-link <?= $current === 'projects' ? 'active' : '' ?>" href="<?= e(admin_url('projects')) ?>">Проекты</a>
       <a class="nav-link <?= $current === 'integrations' ? 'active' : '' ?>" href="<?= e(admin_url('integrations')) ?>">Интеграции</a>
+      <a class="nav-link <?= $current === 'blog' ? 'active' : '' ?>" href="<?= e(admin_url('blog')) ?>">Блог</a>
       <a class="nav-link <?= $current === 'hobbies' ? 'active' : '' ?>" href="<?= e(admin_url('hobbies')) ?>">Хобби</a>
       <a class="nav-link <?= $current === 'certificates' ? 'active' : '' ?>" href="<?= e(admin_url('certificates')) ?>">Сертификаты</a>
       <a class="nav-link <?= $current === 'settings' ? 'active' : '' ?>" href="<?= e(admin_url('settings')) ?>">Настройки</a>
@@ -46,6 +47,7 @@ $current = $current ?? '';
         <a class="nav-link <?= $current === 'dashboard' ? 'active' : '' ?>" href="<?= e(admin_url()) ?>">Обзор</a>
         <a class="nav-link <?= $current === 'projects' ? 'active' : '' ?>" href="<?= e(admin_url('projects')) ?>">Проекты</a>
         <a class="nav-link <?= $current === 'integrations' ? 'active' : '' ?>" href="<?= e(admin_url('integrations')) ?>">Интеграции</a>
+        <a class="nav-link <?= $current === 'blog' ? 'active' : '' ?>" href="<?= e(admin_url('blog')) ?>">Блог</a>
         <a class="nav-link <?= $current === 'hobbies' ? 'active' : '' ?>" href="<?= e(admin_url('hobbies')) ?>">Хобби</a>
         <a class="nav-link <?= $current === 'certificates' ? 'active' : '' ?>" href="<?= e(admin_url('certificates')) ?>">Сертификаты</a>
         <a class="nav-link <?= $current === 'settings' ? 'active' : '' ?>" href="<?= e(admin_url('settings')) ?>">Настройки</a>

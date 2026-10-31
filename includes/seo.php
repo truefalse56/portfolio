@@ -52,6 +52,7 @@ function page_url(string $page, ?string $slug = null): string
         'projects' => $slug ? base_url('projects/' . $slug) : base_url('projects'),
         'integrations' => $slug ? base_url('integrations/' . $slug) : base_url('integrations'),
         'hobbies' => $slug ? base_url('hobbies/' . $slug) : base_url('hobbies'),
+        'blog' => $slug ? base_url('blog/' . $slug) : base_url('blog'),
         'certificates' => base_url('certificates'),
         'sitemap' => base_url('sitemap.xml'),
         default => base_url(ltrim($page, '/')),
@@ -74,6 +75,7 @@ function public_path(string $path): string
         'projects.php' => 'projects',
         'integrations.php' => 'integrations',
         'hobbies.php' => 'hobbies',
+        'blog.php' => 'blog',
         'certificates.php' => 'certificates',
     ];
 
