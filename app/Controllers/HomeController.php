@@ -30,11 +30,11 @@ final class HomeController
              ORDER BY sort_order ASC, id DESC LIMIT 3'
         )->fetchAll();
 
-        $posts = db()->query(
+        $posts = posts_fetch_all(
             'SELECT id, title, slug, excerpt, content, cover_image, published_at, created_at
              FROM posts WHERE is_published = 1
              ORDER BY COALESCE(published_at, created_at) DESC, id DESC LIMIT 3'
-        )->fetchAll();
+        );
 
         $fullName = setting('full_name', 'Килин Вячеслав Александрович');
         $title = setting('title', 'Fullstack Web Разработчик');

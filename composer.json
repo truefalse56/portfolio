@@ -16,7 +16,8 @@
       "includes/seo.php",
       "includes/db.php",
       "includes/auth.php",
-      "includes/upload.php"
+      "includes/upload.php",
+      "includes/posts.php"
     ]
   },
   "config": {

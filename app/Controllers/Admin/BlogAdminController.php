@@ -16,11 +16,11 @@ final class BlogAdminController
             return $this->delete($request);
         }
 
-        $items = db()->query(
+        $items = posts_fetch_all(
             'SELECT id, title, slug, is_published, published_at, created_at, cover_image
              FROM posts
              ORDER BY COALESCE(published_at, created_at) DESC, id DESC'
-        )->fetchAll();
+        );
 
         return View::admin('posts', [
             'pageTitle' => 'Блог',
@@ -48,14 +48,17 @@ final class BlogAdminController
             return View::redirect(admin_url('blog'));
         }
 
+        ensure_posts_table();
         $id = (int) ($data['id'] ?? 0);
-        $stmt = db()->prepare('SELECT cover_image FROM posts WHERE id = ?');
-        $stmt->execute([$id]);
-        $row = $stmt->fetch();
+        $row = posts_fetch_one('SELECT cover_image FROM posts WHERE id = ?', [$id]);
         if ($row) {
-            delete_upload($row['cover_image']);
-            db()->prepare('DELETE FROM posts WHERE id = ?')->execute([$id]);
-            flash('ok', 'Статья удалена.');
+            delete_upload($row['cover_image'] ?? null);
+            try {
+                db()->prepare('DELETE FROM posts WHERE id = ?')->execute([$id]);
+                flash('ok', 'Статья удалена.');
+            } catch (\Throwable $e) {
+                flash('err', $e->getMessage());
+            }
         }
 
         return View::redirect(admin_url('blog'));
@@ -65,10 +68,10 @@ final class BlogAdminController
     {
         $item = null;
 
+        ensure_posts_table();
+        ensure_posts_seeded();
         if ($id > 0) {
-            $stmt = db()->prepare('SELECT * FROM posts WHERE id = ?');
-            $stmt->execute([$id]);
-            $item = $stmt->fetch() ?: null;
+            $item = posts_fetch_one('SELECT * FROM posts WHERE id = ?', [$id]);
             if (!$item) {
                 flash('err', 'Статья не найдена.');
                 return View::redirect(admin_url('blog'));

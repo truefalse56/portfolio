@@ -13,4 +13,5 @@ return array(
     '050227c7fe57e4be56174793419b9618' => $baseDir . '/includes/db.php',
     '6ff24852d8e10fc2d9cd6e15b306106a' => $baseDir . '/includes/auth.php',
     '8e4fc69e577d0bdfd10df9b76afdb44a' => $baseDir . '/includes/upload.php',
+    'a1b2c3d4e5f60718293a4b5c6d7e8f90' => $baseDir . '/includes/posts.php',
 );

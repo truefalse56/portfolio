@@ -20,11 +20,11 @@ final class BlogController
             ['name' => 'Блог'],
         ];
 
-        $posts = db()->query(
+        $posts = posts_fetch_all(
             'SELECT id, title, slug, excerpt, content, cover_image, published_at, created_at
              FROM posts WHERE is_published = 1
              ORDER BY COALESCE(published_at, created_at) DESC, id DESC'
-        )->fetchAll();
+        );
 
         $itemList = [];
         foreach ($posts as $i => $item) {
@@ -78,9 +78,10 @@ final class BlogController
             return $this->notFound();
         }
 
-        $stmt = db()->prepare('SELECT * FROM posts WHERE slug = ? AND is_published = 1 LIMIT 1');
-        $stmt->execute([$slug]);
-        $item = $stmt->fetch();
+        $item = posts_fetch_one(
+            'SELECT * FROM posts WHERE slug = ? AND is_published = 1 LIMIT 1',
+            [$slug]
+        );
         if (!$item) {
             return $this->notFound();
         }

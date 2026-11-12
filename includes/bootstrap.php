@@ -13,3 +13,6 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
         'cookie_samesite' => 'Lax',
     ]);
 }
+
+ensure_posts_table();
+ensure_posts_seeded();
