@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Скопируйте в database.local.php и подставьте значения.
+ * Для Docker: host = db, остальные поля как в .env / docker-compose.
+ */
+return [
+    'host'     => 'db',
+    'port'     => '3306',
+    'dbname'   => 'portfolio',
+    'username' => 'user',
+    'password' => 'password',
+    'charset'  => 'utf8mb4',
+];

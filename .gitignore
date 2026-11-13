@@ -1,9 +1,34 @@
+# Local DB credentials (never commit)
 /config/database.local.php
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# SQL dumps (production/local data) — seed scripts in sql/ stay tracked
+/*.sql
+/docker/mysql/init/*.sql
+!/docker/mysql/init/.gitkeep
+
+# Uploads (keep only placeholders)
 /assets/uploads/**
 !/assets/uploads/.gitkeep
 !/assets/uploads/.htaccess
-/composer.phar
+
+# Runtime / logs
 /storage/debug.flag
-/storage/error.log
-.idea
-.osp
+/storage/*.log
+/composer.phar
+
+# Local leftovers
+/database.sql/
+
+# IDE / OSPanel / OS junk
+.idea/
+.osp/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini
