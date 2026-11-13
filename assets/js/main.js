@@ -35,12 +35,24 @@
     setTheme(getTheme() === "dark" ? "light" : "dark");
   });
 
+  const backToTop = document.querySelector("[data-back-to-top]");
+
   const onScroll = () => {
-    if (!header) return;
-    header.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (header) {
+      header.classList.toggle("is-scrolled", window.scrollY > 8);
+    }
+    if (backToTop) {
+      const show = window.scrollY > 420;
+      backToTop.classList.toggle("is-visible", show);
+      backToTop.hidden = !show;
+    }
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  backToTop?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
   const revealEls = document.querySelectorAll(".reveal, [data-animate]");
   if ("IntersectionObserver" in window) {

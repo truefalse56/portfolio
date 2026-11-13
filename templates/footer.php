@@ -46,6 +46,19 @@ $location = setting('location', '');
     </div>
   </footer>
 
+  <button
+    type="button"
+    class="back-to-top"
+    data-back-to-top
+    aria-label="Наверх"
+    title="Наверх"
+    hidden
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 5v14M5 12l7-7 7 7" />
+    </svg>
+  </button>
+
   <script src="<?= e(asset('vendor/bootstrap/bootstrap.bundle.min.js')) ?>" defer></script>
   <?php if (!empty($loadCodeHighlight)): ?>
   <script src="<?= e(asset('vendor/prism/prism-core.min.js')) ?>" defer></script>
